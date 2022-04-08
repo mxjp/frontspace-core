@@ -1,0 +1,21 @@
+@use "../core";
+
+.content {
+	@include core.content;
+}
+
+.row {
+	@include core.row;
+
+	&.wrap {
+		flex-wrap: wrap;
+	}
+
+	& > .grow {
+		flex-grow: 1;
+	}
+}
+
+.column {
+	@include core.column;
+}

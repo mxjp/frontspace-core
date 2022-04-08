@@ -1,0 +1,103 @@
+
+@mixin normalize {
+	:root {
+		line-height: 1;
+	}
+
+	* {
+		box-sizing: border-box;
+		vertical-align: top;
+
+		--border-width-top: 0px;
+		--border-width-right: 0px;
+		--border-width-bottom: 0px;
+		--border-width-left: 0px;
+		--line-margin: 0px;
+	}
+}
+
+
+
+@function get-padding($side) {
+	@if $side == "top" or $side == "bottom" {
+		@return calc(var(--padding-#{$side}) - var(--border-width-#{$side}) + var(--line-margin));
+	}
+	@return calc(var(--padding-#{$side}) - var(--border-width-#{$side}));
+}
+
+@mixin set-padding($top, $right: $top, $bottom: $top, $left: $right) {
+	--padding-top: #{$top};
+	--padding-right: #{$right};
+	--padding-bottom: #{$bottom};
+	--padding-left: #{$left};
+}
+
+@mixin define-padding($name, $top, $right: $top, $bottom: $top, $left: $right) {
+	--d-#{$name}-padding-top: #{$top};
+	--d-#{$name}-padding-right: #{$right};
+	--d-#{$name}-padding-bottom: #{$bottom};
+	--d-#{$name}-padding-left: #{$left};
+}
+
+@mixin use-padding($name) {
+	@include set-padding(
+		var(--d-#{$name}-padding-top),
+		var(--d-#{$name}-padding-right),
+		var(--d-#{$name}-padding-bottom),
+		var(--d-#{$name}-padding-left));
+}
+
+@mixin padding {
+	padding:
+		get-padding(top)
+		get-padding(right)
+		get-padding(bottom)
+		get-padding(left);
+}
+
+
+
+@mixin column {
+	display: flex;
+	flex-direction: column;
+
+	row-gap: var(--row-gap);
+	column-gap: var(--column-gap);
+}
+
+@mixin row {
+	display: flex;
+	flex-direction: row;
+
+	row-gap: var(--row-gap);
+	column-gap: var(--column-gap);
+}
+
+
+
+@mixin content {
+	@include column;
+	& > :not(:first-child) {
+		margin-top: var(--space-top, 0px);
+	}
+	& > :not(:last-child) {
+		margin-bottom: var(--space-bottom, 0px);
+	}
+}
+
+
+
+@mixin text {
+	line-height: calc(var(--line-gap) + 1em);
+
+	&::before, &::after {
+		content: "";
+		display: block;
+		margin-top: calc(var(--line-gap) / -2);
+	}
+}
+
+@mixin text-native($top: 0px, $right: $top, $bottom: $top, $left: $right) {
+	line-height: calc(var(--line-gap) + 1em);
+	--line-margin: calc(var(--line-gap) / -2);
+}

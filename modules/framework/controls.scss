@@ -1,0 +1,21 @@
+@use "../core";
+
+.button:not([disabled]) {
+	cursor: pointer;
+}
+
+.button,
+.input {
+	@include core.padding;
+	@include core.use-padding(control);
+}
+
+input.input,
+textarea.input {
+	@include core.text-native;
+}
+
+.button:not(.no-text),
+.input:not(.no-text):not(input):not(textarea) {
+	@include core.text;
+}
